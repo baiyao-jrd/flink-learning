@@ -46,12 +46,14 @@
 
         <dependency>
             <groupId>org.apache.flink</groupId>
+            <!--flink-SQL依赖-->
             <artifactId>flink-table-api-java-bridge_${scala.binary.version}</artifactId>
             <version>${flink.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.flink</groupId>
+            <!--flink-SQL依赖-->
             <artifactId>flink-table-planner-blink_${scala.binary.version}</artifactId>
             <version>${flink.version}</version>
         </dependency>
@@ -64,33 +66,43 @@
 
         <dependency>
             <groupId>org.apache.flink</groupId>
+            <!--flink-SQL依赖-->
             <artifactId>flink-table-common</artifactId>
             <version>${flink.version}</version>
         </dependency>
 
         <dependency>
             <groupId>mysql</groupId>
+            <!--jdbc驱动-->
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.21</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.flink</groupId>
+            <!--flink读写kafka时需要用到-->
             <artifactId>flink-connector-kafka_${scala.binary.version}</artifactId>
             <version>${flink.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.flink</groupId>
+            <!--flink-SQL处理csv文件-->
             <artifactId>flink-csv</artifactId>
             <version>${flink.version}</version>
         </dependency>
     </dependencies>
 
+    <!--
+
+    jar包如何产生： 代码 -> 字节码文件 -> jar包
+
+    -->
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <!--打包插件 assembly：汇编 把代码打包成jar包-->
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>3.3.0</version>
                 <configuration>
@@ -111,10 +123,13 @@
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <!--将java程序编译成字节码文件-->
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
+                    <!--java程序是java8的语法-->
                     <source>8</source>
+                    <!--目标字节码版本是java8的字节码版本-->
                     <target>8</target>
                 </configuration>
             </plugin>
