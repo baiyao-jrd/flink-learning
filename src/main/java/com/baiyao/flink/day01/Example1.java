@@ -9,7 +9,7 @@ import org.apache.flink.util.Collector;
 
 /*
  *
- * 单词计数案例
+ * 单词计数案例【从socket消费数据】
  *
  * 过程总结：
  * 输入Hello world
@@ -26,8 +26,10 @@ import org.apache.flink.util.Collector;
  * ("world",1)经过keyby之后分到了world对应的小组，("world",1)到reduce之后，由于是world对应的小组累加器为("world",1)，
  *             所以输入的("world",1)会与累加器("world",1)做聚合累加，变成("world",2)打印出来
  *
- *
- * 累加器没有办法设置初始值，foldLeft可以 - 折叠操作
+ * 【注意】
+ * 1. 累加器没有办法设置初始值，foldLeft可以 - 折叠操作
+ * 2. flatmap是无状态算子
+ * 3. reduce是有状态算子，需要一个累加器来维护内部状态，进行聚合操作
  * */
 public class Example1 {
 
@@ -68,6 +70,26 @@ public class Example1 {
                 //                    注意： reduce定义的是输入数据和累加器的聚合规则，返回的仍是累加器
                 .reduce(new WordCount())
                 //2.7 设置reduce算子的并行子任务数量为1
+
+                /*
+                * reduce只有一个并行子任务(跑在了一个线程里面)，那么它如何把不同小组(Hello，1) (world,1)的数据区分开进行分组处理的呢？
+                *
+                * 使用HashMap，数据里面的key就是hash表里面的key
+                * 1. (Hello,1)到来reduce之后，首先会在hash表里面查找key为Hello的累加器，没有找到，
+                *    (Hello,1)就会作为累加器保存下来，其实就是put了一个key，value键值对，key是Hello，
+                *    value就是(Hello,1)，经历算子print()，就会将(Hello,1)输出
+                * 2. (world,1)到来reduce之后，首先会在hash表里面查找key为world的累加器，没有找到，
+                *    (world,1)就会作为累加器保存下来，其实就是put了一个key，value键值对，key是world，
+                *    value就是(world,1)，经历算子print()，就会将(world,1)输出
+                * 3. 继续输入Hello world
+                * 4. (Hello,1)到来reduce之后，首先会在hash表里面查找key为Hello的累加器，找到，与(Hello,1)
+                *    做聚合得到(Hello,2)，原来累加器的值(Hello,1)会被删掉，接着历经print()输出(Hello,2)
+                * 5. (world,1)同理
+                *
+                * reduce并行子任务维护内部状态的方式就是使用hashmap，如果设置了保存检查点，就可以把hash表隔一段时间
+                * 保存到硬盘上，对于每一个key，reduce维护一个累加器
+                *
+                * */
                 .setParallelism(1)
                 //2.x 打印
                 .print()
