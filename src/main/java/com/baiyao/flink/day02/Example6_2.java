@@ -26,6 +26,10 @@ public class Example6_2 {
                 //1. 输入输出均是字符串
                 .flatMap(new FlatMapFunction<String, String>() {
                     @Override
+                    //这里的Collector<String>也会擦除为Collector<Object>，但是new FlatMapFunction<String, String>
+                    //明确定义了接口里面的泛型是string，java编译字节码的时候会根据接口里面提供的类型，把Object再强制类型转换成
+                    //String，只要是泛型，一定存在类型擦除
+                    //lambda表达式的问题就在于，编译完之后，类型信息就消失了
                     public void flatMap(String in, Collector<String> out) throws Exception {
                         if (in.equals("white")) {
                             out.collect(in);
