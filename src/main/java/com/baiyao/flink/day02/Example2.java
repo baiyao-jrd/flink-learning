@@ -41,7 +41,7 @@ public class Example2 {
             //2. 遍历vertex指向的所有顶点
             for (String s : dag.get(vertex)) {
                 //3. 递归调用
-                topologicalSort(dag,s,result + "=>" + s);
+                topologicalSort(dag, s, result + "=>" + s);
             }
         }
     }

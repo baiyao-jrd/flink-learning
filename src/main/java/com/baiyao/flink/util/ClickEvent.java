@@ -6,6 +6,11 @@ import java.sql.Timestamp;
 * pojo类: 公有类、公有字段、空构造器
 *
 * 用来抽象点击流
+*
+*
+* scala中样例类就一行搞定：
+*
+* case class ClickEvent(username: String, url : String, ts : Long)
 * */
 public class ClickEvent {
     public String username;
