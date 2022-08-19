@@ -5,7 +5,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.util.Collector;
 
 /*
- * flatmap
+ * flatmap 【运行报错示例程序】
  *
  * 使用匿名函数编写出错详解
  *
@@ -15,7 +15,7 @@ import org.apache.flink.util.Collector;
  * 将white原封不动输出、black复制一份、gray过滤掉
  *
  * */
-public class Example6 {
+public class Example6_1 {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(1);
@@ -36,6 +36,37 @@ public class Example6 {
                 })
                 .print("匿名类");
 
+        env
+                .fromElements("white","black","gray")
+                .flatMap(new MyFlatMap())
+                .print("外部类");
+
+        env
+                .fromElements("white","black","gray")
+                .flatMap((in,out) -> {
+                    if (in.equals("white")) {
+                        out.collect(in);
+                    } else if (in.equals("black")) {
+                        out.collect(in);
+                        out.collect(in);
+                    }
+                })
+                .print("lambda");
+
+
         env.execute();
+    }
+
+    public static class MyFlatMap implements FlatMapFunction<String, String> {
+
+        @Override
+        public void flatMap(String in, Collector<String> out) throws Exception {
+            if (in.equals("white")) {
+                out.collect(in);
+            } else if (in.equals("black")) {
+                out.collect(in);
+                out.collect(in);
+            }
+        }
     }
 }
