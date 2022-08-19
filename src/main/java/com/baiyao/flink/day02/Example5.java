@@ -40,6 +40,9 @@ public class Example5 {
         env
                 .addSource(new ClickSource())
                 //3. 输入数据经过λ表达式输出结果为真就放行
+
+                //没有进行类型擦除，为什么？
+                //--r.username.equals("Mary")返回值类型为布尔值，为基本数据类型，不会被擦除掉
                 .filter(r -> r.username.equals("Mary"))
                 .print("使用lambda表达式方式");
 

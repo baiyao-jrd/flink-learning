@@ -8,7 +8,7 @@ import org.apache.flink.util.Collector;
 public class Example1 {
     public static void main(String[] args) throws Exception{
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        env.setParallelism(1);
+        env.setParallelism(2);
         env
                 .fromElements("Hello world","Hello world")
                 .flatMap(new FlatMapFunction<String, Tuple2<String,Long>>() {

@@ -4,6 +4,8 @@ import com.baiyao.flink.util.ClickEvent;
 import com.baiyao.flink.util.ClickSource;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.functions.MapFunction;
+import org.apache.flink.api.common.typeinfo.Types;
+import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.util.Collector;
 
@@ -41,6 +43,16 @@ public class Example4 {
                 .addSource(new ClickSource())
                 .map(r -> r.username)
                 .print("使用匿名函数实现map");
+
+        env
+                .fromElements(1,2,3)
+                .map(r -> Tuple2.of(r, r))
+                //Tuple2(Integer, Integer) 被擦除为 Tuple2(Object, Object)
+                .returns(Types.TUPLE(
+                        Types.INT,
+                        Types.INT
+                ))
+                .print("不会执行，存在类型擦除，Tuple2.of(r, r)不为基本数据类型");
 
         env
                 .addSource(new ClickSource())
