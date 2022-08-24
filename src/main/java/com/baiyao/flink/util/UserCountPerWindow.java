@@ -1,5 +1,7 @@
 package com.baiyao.flink.util;
 
+import java.sql.Timestamp;
+
 public class UserCountPerWindow {
     public String username;
     public Long count;
@@ -9,7 +11,7 @@ public class UserCountPerWindow {
     public UserCountPerWindow() {
     }
 
-    public UserCountPerWindow(String username, long count, long startTime, long endTime) {
+    public UserCountPerWindow(String username, Long count, Long startTime, Long endTime) {
         this.username = username;
         this.count = count;
         this.startTime = startTime;
@@ -21,8 +23,8 @@ public class UserCountPerWindow {
         return "UserCountPerWindow{" +
                 "username='" + username + '\'' +
                 ", count=" + count +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
+                ", startTime=" +new Timestamp(startTime) +
+                ", endTime=" + new Timestamp(endTime) +
                 '}';
     }
 }

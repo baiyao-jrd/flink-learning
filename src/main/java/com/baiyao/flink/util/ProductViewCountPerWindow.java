@@ -4,14 +4,14 @@ import java.sql.Timestamp;
 
 public class ProductViewCountPerWindow {
     public String username;
-    public long count;
-    public long windowStartTime;
-    public long windowEndTime;
+    public Long count;
+    public Long windowStartTime;
+    public Long windowEndTime;
 
     public ProductViewCountPerWindow() {
     }
 
-    public ProductViewCountPerWindow(String username, long count, long windowStartTime, long windowEndTime) {
+    public ProductViewCountPerWindow(String username, Long count, Long windowStartTime, Long windowEndTime) {
         this.username = username;
         this.count = count;
         this.windowStartTime = windowStartTime;
