@@ -3,7 +3,7 @@ package org.baiyao.flink.day02;
 import org.apache.flink.util.MathUtils;
 
 /*
-* 计算key为2的数据要去的reduce的并行子任务的索引值
+* 计算key为2的数据要去的reduce的并行子任务的索引值【keyBy的底层原理】
 * */
 public class Example09 {
     public static void main(String[] args) {
