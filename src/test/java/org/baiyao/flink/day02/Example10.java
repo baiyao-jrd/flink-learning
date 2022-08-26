@@ -22,6 +22,7 @@ public class Example10 {
                     public void run(SourceContext<Integer> ctx) throws Exception {
                         while (running) {
                             ctx.collect(random.nextInt(1000));
+                            Thread.sleep(1000L);
                         }
                     }
 
